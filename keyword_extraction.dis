@@ -1,0 +1,351 @@
+  0           0 RESUME                   0
+
+  1           2 LOAD_CONST               0 (0)
+              4 LOAD_CONST               1 (('annotations',))
+              6 IMPORT_NAME              0 (__future__)
+              8 IMPORT_FROM              1 (annotations)
+             10 STORE_NAME               1 (annotations)
+             12 POP_TOP
+
+  3          14 LOAD_CONST               0 (0)
+             16 LOAD_CONST               2 (('Counter',))
+             18 IMPORT_NAME              2 (collections)
+             20 IMPORT_FROM              3 (Counter)
+             22 STORE_NAME               3 (Counter)
+             24 POP_TOP
+
+  4          26 LOAD_CONST               0 (0)
+             28 LOAD_CONST               3 (('dataclass',))
+             30 IMPORT_NAME              4 (dataclasses)
+             32 IMPORT_FROM              5 (dataclass)
+             34 STORE_NAME               5 (dataclass)
+             36 POP_TOP
+
+  5          38 LOAD_CONST               0 (0)
+             40 LOAD_CONST               4 (('Iterable',))
+             42 IMPORT_NAME              6 (typing)
+             44 IMPORT_FROM              7 (Iterable)
+             46 STORE_NAME               7 (Iterable)
+             48 POP_TOP
+
+  7          50 LOAD_CONST               0 (0)
+             52 LOAD_CONST               5 (None)
+             54 IMPORT_NAME              8 (numpy)
+             56 STORE_NAME               9 (np)
+
+  8          58 LOAD_CONST               0 (0)
+             60 LOAD_CONST               6 (('TfidfVectorizer',))
+             62 IMPORT_NAME             10 (sklearn.feature_extraction.text)
+             64 IMPORT_FROM             11 (TfidfVectorizer)
+             66 STORE_NAME              11 (TfidfVectorizer)
+             68 POP_TOP
+
+ 10          70 LOAD_CONST               7 (1)
+             72 LOAD_CONST               8 (('PreprocessedDocument',))
+             74 IMPORT_NAME             12 (preprocessing)
+             76 IMPORT_FROM             13 (PreprocessedDocument)
+             78 STORE_NAME              13 (PreprocessedDocument)
+             80 POP_TOP
+
+ 13          82 LOAD_NAME                5 (dataclass)
+
+ 14          84 PUSH_NULL
+             86 LOAD_BUILD_CLASS
+             88 LOAD_CONST               9 (<code object KeywordItem at 0x104ddbd20, file "backend/nlp/keyword_extraction.py", line 13>)
+             90 MAKE_FUNCTION            0
+             92 LOAD_CONST              10 ('KeywordItem')
+             94 CALL                     2
+
+ 13         102 CALL                     0
+
+ 14         110 STORE_NAME              14 (KeywordItem)
+
+ 19         112 LOAD_CONST              13 (('tokens', 'Iterable[str]', 'top_n', 'int', 'return', 'list[KeywordItem]'))
+            114 LOAD_CONST              11 (<code object _fallback_keywords at 0x104f30bb0, file "backend/nlp/keyword_extraction.py", line 19>)
+            116 MAKE_FUNCTION            4 (annotations)
+            118 STORE_NAME              15 (_fallback_keywords)
+
+ 25         120 LOAD_CONST              14 ((15,))
+            122 LOAD_CONST              15 (('document', 'PreprocessedDocument', 'top_n', 'int', 'return', 'list[KeywordItem]'))
+            124 LOAD_CONST              12 (<code object extract_keywords at 0x127112400, file "backend/nlp/keyword_extraction.py", line 25>)
+            126 MAKE_FUNCTION            5 (defaults, annotations)
+            128 STORE_NAME              16 (extract_keywords)
+            130 RETURN_CONST             5 (None)
+
+Disassembly of <code object KeywordItem at 0x104ddbd20, file "backend/nlp/keyword_extraction.py", line 13>:
+ 13           0 RESUME                   0
+              2 LOAD_NAME                0 (__name__)
+              4 STORE_NAME               1 (__module__)
+              6 LOAD_CONST               0 ('KeywordItem')
+              8 STORE_NAME               2 (__qualname__)
+             10 SETUP_ANNOTATIONS
+
+ 15          12 LOAD_CONST               1 ('str')
+             14 LOAD_NAME                3 (__annotations__)
+             16 LOAD_CONST               2 ('text')
+             18 STORE_SUBSCR
+
+ 16          22 LOAD_CONST               3 ('float')
+             24 LOAD_NAME                3 (__annotations__)
+             26 LOAD_CONST               4 ('score')
+             28 STORE_SUBSCR
+             32 RETURN_CONST             5 (None)
+
+Disassembly of <code object _fallback_keywords at 0x104f30bb0, file "backend/nlp/keyword_extraction.py", line 19>:
+ 19           0 RESUME                   0
+
+ 20           2 LOAD_GLOBAL              1 (NULL + Counter)
+             12 LOAD_CONST               1 (<code object <genexpr> at 0x104e61590, file "backend/nlp/keyword_extraction.py", line 20>)
+             14 MAKE_FUNCTION            0
+             16 LOAD_FAST                0 (tokens)
+             18 GET_ITER
+             20 CALL                     0
+             28 CALL                     1
+             36 STORE_FAST               2 (counts)
+
+ 21          38 LOAD_FAST                2 (counts)
+             40 LOAD_ATTR                3 (NULL|self + most_common)
+             60 LOAD_FAST                1 (top_n)
+             62 CALL                     1
+             70 GET_ITER
+             72 LOAD_FAST_AND_CLEAR      3 (token)
+             74 LOAD_FAST_AND_CLEAR      4 (score)
+             76 SWAP                     3
+             78 BUILD_LIST               0
+             80 SWAP                     2
+        >>   82 FOR_ITER                27 (to 140)
+             86 UNPACK_SEQUENCE          2
+             90 STORE_FAST               3 (token)
+             92 STORE_FAST               4 (score)
+             94 LOAD_GLOBAL              5 (NULL + KeywordItem)
+            104 LOAD_FAST                3 (token)
+            106 LOAD_GLOBAL              7 (NULL + float)
+            116 LOAD_FAST                4 (score)
+            118 CALL                     1
+            126 KW_NAMES                 2 (('text', 'score'))
+            128 CALL                     2
+            136 LIST_APPEND              2
+            138 JUMP_BACKWARD           29 (to 82)
+        >>  140 END_FOR
+            142 STORE_FAST               5 (items)
+            144 STORE_FAST               3 (token)
+            146 STORE_FAST               4 (score)
+
+ 22         148 LOAD_FAST                5 (items)
+            150 RETURN_VALUE
+        >>  152 SWAP                     2
+            154 POP_TOP
+
+ 21         156 SWAP                     3
+            158 STORE_FAST               4 (score)
+            160 STORE_FAST               3 (token)
+            162 RERAISE                  0
+ExceptionTable:
+  78 to 140 -> 152 [3]
+
+Disassembly of <code object <genexpr> at 0x104e61590, file "backend/nlp/keyword_extraction.py", line 20>:
+ 20           0 RETURN_GENERATOR
+              2 POP_TOP
+              4 RESUME                   0
+              6 LOAD_FAST                0 (.0)
+        >>    8 FOR_ITER                40 (to 92)
+             12 STORE_FAST               1 (token)
+             14 LOAD_FAST                1 (token)
+             16 POP_JUMP_IF_TRUE         1 (to 20)
+             18 JUMP_BACKWARD            6 (to 8)
+        >>   20 LOAD_FAST                1 (token)
+             22 LOAD_ATTR                1 (NULL|self + isalpha)
+             42 CALL                     0
+             50 POP_JUMP_IF_TRUE         1 (to 54)
+             52 JUMP_BACKWARD           23 (to 8)
+        >>   54 LOAD_FAST                1 (token)
+             56 LOAD_ATTR                3 (NULL|self + lower)
+             76 CALL                     0
+             84 YIELD_VALUE              1
+             86 RESUME                   1
+             88 POP_TOP
+             90 JUMP_BACKWARD           42 (to 8)
+        >>   92 END_FOR
+             94 RETURN_CONST             0 (None)
+        >>   96 CALL_INTRINSIC_1         3 (INTRINSIC_STOPITERATION_ERROR)
+             98 RERAISE                  1
+ExceptionTable:
+  4 to 16 -> 96 [0] lasti
+  20 to 50 -> 96 [0] lasti
+  54 to 94 -> 96 [0] lasti
+
+Disassembly of <code object extract_keywords at 0x127112400, file "backend/nlp/keyword_extraction.py", line 25>:
+ 25           0 RESUME                   0
+
+ 26           2 LOAD_FAST                0 (document)
+              4 LOAD_ATTR                0 (sentences)
+             24 GET_ITER
+             26 LOAD_FAST_AND_CLEAR      2 (sentence)
+             28 SWAP                     2
+             30 BUILD_LIST               0
+             32 SWAP                     2
+        >>   34 FOR_ITER                41 (to 120)
+             38 STORE_FAST               2 (sentence)
+             40 LOAD_FAST                2 (sentence)
+             42 LOAD_ATTR                2 (cleaned_text)
+             62 LOAD_ATTR                5 (NULL|self + strip)
+             82 CALL                     0
+             90 POP_JUMP_IF_TRUE         1 (to 94)
+             92 JUMP_BACKWARD           30 (to 34)
+        >>   94 LOAD_FAST                2 (sentence)
+             96 LOAD_ATTR                2 (cleaned_text)
+            116 LIST_APPEND              2
+            118 JUMP_BACKWARD           43 (to 34)
+        >>  120 END_FOR
+            122 STORE_FAST               3 (corpus)
+            124 STORE_FAST               2 (sentence)
+
+ 28         126 LOAD_FAST                3 (corpus)
+            128 POP_JUMP_IF_TRUE        22 (to 174)
+
+ 29         130 LOAD_GLOBAL              7 (NULL + _fallback_keywords)
+            140 LOAD_FAST                0 (document)
+            142 LOAD_ATTR                8 (filtered_tokens)
+            162 LOAD_FAST                1 (top_n)
+            164 CALL                     2
+            172 RETURN_VALUE
+
+ 31     >>  174 NOP
+
+ 32         176 LOAD_GLOBAL             11 (NULL + TfidfVectorizer)
+
+ 33         186 LOAD_CONST               1 ((1, 2))
+
+ 34         188 LOAD_CONST               2 (500)
+
+ 35         190 LOAD_CONST               3 (1)
+
+ 32         192 KW_NAMES                 4 (('ngram_range', 'max_features', 'min_df'))
+            194 CALL                     3
+            202 STORE_FAST               4 (vectorizer)
+
+ 37         204 LOAD_FAST                4 (vectorizer)
+            206 LOAD_ATTR               13 (NULL|self + fit_transform)
+            226 LOAD_FAST                3 (corpus)
+            228 CALL                     1
+            236 STORE_FAST               5 (matrix)
+
+ 38         238 LOAD_GLOBAL             15 (NULL + np)
+            248 LOAD_ATTR               16 (asarray)
+            268 LOAD_FAST                5 (matrix)
+            270 LOAD_ATTR               19 (NULL|self + sum)
+            290 LOAD_CONST               5 (0)
+            292 KW_NAMES                 6 (('axis',))
+            294 CALL                     1
+            302 CALL                     1
+            310 LOAD_ATTR               21 (NULL|self + ravel)
+            330 CALL                     0
+            338 STORE_FAST               6 (scores)
+
+ 39         340 LOAD_FAST                4 (vectorizer)
+            342 LOAD_ATTR               23 (NULL|self + get_feature_names_out)
+            362 CALL                     0
+            370 STORE_FAST               7 (feature_names)
+
+ 40         372 LOAD_GLOBAL             25 (NULL + sorted)
+            382 LOAD_GLOBAL             27 (NULL + zip)
+            392 LOAD_FAST                7 (feature_names)
+            394 LOAD_FAST                6 (scores)
+            396 CALL                     2
+            404 LOAD_CONST               7 (<code object <lambda> at 0x104f55a30, file "backend/nlp/keyword_extraction.py", line 40>)
+            406 MAKE_FUNCTION            0
+            408 LOAD_CONST               8 (True)
+            410 KW_NAMES                 9 (('key', 'reverse'))
+            412 CALL                     3
+            420 STORE_FAST               8 (ranked)
+
+ 43         422 LOAD_FAST                8 (ranked)
+
+ 41         424 GET_ITER
+            426 LOAD_FAST_AND_CLEAR      9 (term)
+            428 LOAD_FAST_AND_CLEAR     10 (score)
+            430 SWAP                     3
+            432 BUILD_LIST               0
+            434 SWAP                     2
+        >>  436 FOR_ITER                45 (to 530)
+
+ 43         440 UNPACK_SEQUENCE          2
+            444 STORE_FAST               9 (term)
+            446 STORE_FAST              10 (score)
+
+ 44         448 LOAD_FAST                9 (term)
+            450 POP_JUMP_IF_FALSE       38 (to 528)
+            452 LOAD_FAST                9 (term)
+            454 LOAD_ATTR                5 (NULL|self + strip)
+            474 CALL                     0
+            482 POP_JUMP_IF_FALSE       22 (to 528)
+
+ 42         484 LOAD_GLOBAL             29 (NULL + KeywordItem)
+            494 LOAD_FAST                9 (term)
+            496 LOAD_GLOBAL             31 (NULL + float)
+            506 LOAD_FAST               10 (score)
+            508 CALL                     1
+            516 KW_NAMES                10 (('text', 'score'))
+            518 CALL                     2
+            526 LIST_APPEND              2
+        >>  528 JUMP_BACKWARD           47 (to 436)
+
+ 41     >>  530 END_FOR
+            532 STORE_FAST              11 (keywords)
+            534 STORE_FAST               9 (term)
+            536 STORE_FAST              10 (score)
+
+ 46         538 LOAD_FAST               11 (keywords)
+            540 LOAD_CONST               0 (None)
+            542 LOAD_FAST                1 (top_n)
+            544 BINARY_SLICE
+            546 RETURN_VALUE
+        >>  548 SWAP                     2
+            550 POP_TOP
+
+ 26         552 SWAP                     2
+            554 STORE_FAST               2 (sentence)
+            556 RERAISE                  0
+        >>  558 SWAP                     2
+            560 POP_TOP
+
+ 41         562 SWAP                     3
+            564 STORE_FAST              10 (score)
+            566 STORE_FAST               9 (term)
+            568 RERAISE                  0
+        >>  570 PUSH_EXC_INFO
+
+ 47         572 LOAD_GLOBAL             32 (ValueError)
+            582 CHECK_EXC_MATCH
+            584 POP_JUMP_IF_FALSE       25 (to 636)
+            586 POP_TOP
+
+ 48         588 LOAD_GLOBAL              7 (NULL + _fallback_keywords)
+            598 LOAD_FAST                0 (document)
+            600 LOAD_ATTR                8 (filtered_tokens)
+            620 LOAD_FAST                1 (top_n)
+            622 CALL                     2
+            630 SWAP                     2
+            632 POP_EXCEPT
+            634 RETURN_VALUE
+
+ 47     >>  636 RERAISE                  0
+        >>  638 COPY                     3
+            640 POP_EXCEPT
+            642 RERAISE                  1
+ExceptionTable:
+  30 to 90 -> 548 [2]
+  94 to 120 -> 548 [2]
+  176 to 430 -> 570 [0]
+  432 to 530 -> 558 [3]
+  532 to 544 -> 570 [0]
+  558 to 568 -> 570 [0]
+  570 to 630 -> 638 [1] lasti
+  636 to 636 -> 638 [1] lasti
+
+Disassembly of <code object <lambda> at 0x104f55a30, file "backend/nlp/keyword_extraction.py", line 40>:
+ 40           0 RESUME                   0
+              2 LOAD_FAST                0 (item)
+              4 LOAD_CONST               1 (1)
+              6 BINARY_SUBSCR
+             10 RETURN_VALUE

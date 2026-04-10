@@ -1,0 +1,54 @@
+@import "@fontsource/space-grotesk/400.css";
+@import "@fontsource/space-grotesk/500.css";
+@import "@fontsource/space-grotesk/700.css";
+@import "@fontsource/ibm-plex-mono/400.css";
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  color-scheme: dark;
+}
+
+html,
+body,
+#root {
+  min-height: 100%;
+}
+
+body {
+  margin: 0;
+  font-family: "Space Grotesk", sans-serif;
+  background:
+    radial-gradient(circle at 10% 20%, rgba(192, 38, 211, 0.15), transparent 30%),
+    radial-gradient(circle at 80% 30%, rgba(139, 92, 246, 0.15), transparent 30%),
+    radial-gradient(circle at 50% 90%, rgba(217, 70, 239, 0.1), transparent 30%),
+    linear-gradient(135deg, #09090b 0%, #18181b 50%, #09090b 100%);
+  background-attachment: fixed;
+  color: #e2e8f0;
+}
+
+::selection {
+  background: rgba(192, 38, 211, 0.3);
+  color: white;
+}
+
+.mono {
+  font-family: "IBM Plex Mono", monospace;
+}
+
+@keyframes float {
+  0% { transform: translateY(0px) rotate(0deg); }
+  50% { transform: translateY(-10px) rotate(1deg); }
+  100% { transform: translateY(0px) rotate(0deg); }
+}
+
+.animate-float {
+  animation: float 6s ease-in-out infinite;
+}
+
+.animate-float-delayed {
+  animation: float 6s ease-in-out 3s infinite;
+}
+
