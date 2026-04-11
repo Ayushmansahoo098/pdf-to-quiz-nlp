@@ -6,6 +6,7 @@ from .keyword_extraction import KeywordItem, extract_keywords
 from .ner import EntityItem, extract_entities
 from .preprocessing import PreprocessedDocument, extract_pdf_text, preprocess_document
 from .question_generation import generate_quiz_questions, rank_sentences
+from .llm_generation import call_ollama
 
 
 @dataclass
@@ -42,15 +43,22 @@ def generate_quiz_from_pdf(pdf_bytes: bytes, questions_per_type: int = 4) -> Qui
     document = preprocess_document(text, page_count=page_count)
     keywords = extract_keywords(document, top_n=max(15, questions_per_type * 4))
     entities, model_loaded = extract_entities(document.raw_text)
-    ranked_sentences = rank_sentences(document, keywords, entities)
-
-    counts = {
-        "mcq": questions_per_type,
-        "fill_blank": questions_per_type,
-        "wh": questions_per_type,
-        "true_false": questions_per_type,
-    }
-    quiz = generate_quiz_questions(ranked_sentences, keywords, entities, counts)
+    
+    # Attempt offline LLM generation
+    quiz = call_ollama(document.raw_text, "llama3")
+    llm_used = True
+    
+    # Fallback to pure logic if LLM offline
+    if not quiz:
+        llm_used = False
+        ranked_sentences = rank_sentences(document, keywords, entities)
+        counts = {
+            "mcq": questions_per_type,
+            "fill_blank": questions_per_type,
+            "wh": questions_per_type,
+            "true_false": questions_per_type,
+        }
+        quiz = generate_quiz_questions(ranked_sentences, keywords, entities, counts)
 
     return QuizGenerationResult(
         document=_document_stats(document),
@@ -59,7 +67,8 @@ def generate_quiz_from_pdf(pdf_bytes: bytes, questions_per_type: int = 4) -> Qui
         quiz=quiz,
         pipeline={
             "spaCy_model_loaded": model_loaded,
-            "extractor": "PyMuPDF + NLTK + spaCy + TF-IDF + WordNet",
+            "extractor": "Local LLM Strategy" if llm_used else "PyMuPDF + NLTK + spaCy + TF-IDF",
             "local_only": True,
+            "llm_connected": llm_used,
         },
     )

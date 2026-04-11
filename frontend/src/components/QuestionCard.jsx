@@ -45,7 +45,7 @@ function QuestionCard({ item, value, onChange, revealed, correct }) {
               </span>
             ) : null}
           </div>
-          <h3 className="max-w-3xl text-lg font-semibold leading-7 text-white">{item.prompt}</h3>
+          <h3 className="max-w-3xl text-lg font-semibold leading-7 text-white whitespace-pre-wrap">{item.prompt}</h3>
         </div>
       </div>
 
@@ -88,10 +88,6 @@ function QuestionCard({ item, value, onChange, revealed, correct }) {
         )}
       </div>
 
-      <div className="mt-5 rounded-2xl border border-white/10 bg-zinc-950/40 p-4 text-sm text-zinc-200">
-        <p className="text-xs uppercase tracking-[0.25em] text-zinc-400">Source sentence</p>
-        <p className="mt-2 leading-6">{item.source_sentence}</p>
-      </div>
 
       {revealed ? (
         <div className="mt-4 rounded-2xl border border-white/10 bg-white/5 p-4">

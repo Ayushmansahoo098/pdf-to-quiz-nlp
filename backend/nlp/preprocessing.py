@@ -79,9 +79,15 @@ def normalize_whitespace(text: str) -> str:
     text = text.replace("\r", "\n")
     text = re.sub(r"(?<=\w)-\n(?=\w)", "", text)
     text = re.sub(r"[ \t]+", " ", text)
-    text = re.sub(r"\n{2,}", "\n\n", text)
-    text = re.sub(r"\s*\n\s*", " ", text)
-    return re.sub(r"\s+", " ", text).strip()
+    # Format bullets
+    text = re.sub(r"\s*([•·▪])\s*", r"\n• ", text)
+    # Ensure there's a space after bullet points
+    text = re.sub(r"(?<=\n[•·▪])(?=[^\s])", " ", text)
+    # Remove excessive newlines but preserve formatting
+    text = re.sub(r" \n", "\n", text)
+    text = re.sub(r"\n ", "\n", text)
+    text = re.sub(r"\n{3,}", "\n\n", text)
+    return text.strip()
 
 
 def extract_pdf_text(pdf_bytes: bytes) -> tuple[str, int]:

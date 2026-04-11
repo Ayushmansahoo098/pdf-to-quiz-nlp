@@ -156,7 +156,7 @@ def build_fill_blank_question(sentence: SentenceFeatures, target: str) -> QuizQu
     return QuizQuestion(
         id=f"fill-{sentence.index}",
         type=QuestionType.FILL_BLANK.value,
-        prompt=f"Fill in the blank: {blanked}",
+        prompt=f'Fill in the blank: "{blanked}"',
         answer=target,
         source_sentence=sentence.text,
         focus_term=target,
@@ -178,7 +178,7 @@ def build_wh_question(sentence: SentenceFeatures, target: str, label: str) -> Qu
     return QuizQuestion(
         id=f"wh-{sentence.index}",
         type=QuestionType.WH.value,
-        prompt=_with_question_mark(_replace_first(sentence.text, target, wh_word)),
+        prompt=f'"{_with_question_mark(_replace_first(sentence.text, target, wh_word))}"',
         answer=target,
         source_sentence=sentence.text,
         focus_term=target,
@@ -225,7 +225,7 @@ def build_true_false_question(
     return QuizQuestion(
         id=f"tf-{sentence.index}",
         type=QuestionType.TRUE_FALSE.value,
-        prompt=f"True or False: {statement}",
+        prompt=f'True or False: "{statement}"',
         answer=make_true,
         source_sentence=sentence.text,
         focus_term=target,
@@ -247,7 +247,7 @@ def build_mcq_question(
     return QuizQuestion(
         id=f"mcq-{sentence.index}",
         type=QuestionType.MCQ.value,
-        prompt=f"Which option best completes the sentence? {_replace_first(sentence.text, target, '_____')}",
+        prompt=f'Complete the sentence: "{_replace_first(sentence.text, target, "_____")}"',
         answer=target,
         options=options,
         source_sentence=sentence.text,
@@ -268,6 +268,11 @@ def generate_quiz_questions(
 
     for sentence_entry in ranked_sentences:
         sentence = sentence_entry.sentence
+        
+        # Skip sentences that are too long, too short, or contain complex formatting (like multi-line lists)
+        if "\n" in sentence.text or len(sentence.text) > 200 or len(sentence.tokens) < 6:
+            continue
+            
         target, label = select_focus_term(sentence, keywords, entities)
         if not target:
             continue
@@ -276,15 +281,15 @@ def generate_quiz_questions(
             generated.append(build_mcq_question(sentence, target, label, keywords, entities))
             per_type_counts["mcq"] += 1
 
-        if per_type_counts["fill_blank"] < counts.get("fill_blank", 0):
+        elif per_type_counts["fill_blank"] < counts.get("fill_blank", 0):
             generated.append(build_fill_blank_question(sentence, target))
             per_type_counts["fill_blank"] += 1
 
-        if per_type_counts["wh"] < counts.get("wh", 0):
+        elif per_type_counts["wh"] < counts.get("wh", 0):
             generated.append(build_wh_question(sentence, target, label))
             per_type_counts["wh"] += 1
 
-        if per_type_counts["true_false"] < counts.get("true_false", 0):
+        elif per_type_counts["true_false"] < counts.get("true_false", 0):
             generated.append(
                 build_true_false_question(
                     sentence,
